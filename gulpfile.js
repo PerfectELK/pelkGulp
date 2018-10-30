@@ -16,14 +16,14 @@ var opts = {
 };
 
 
-gulp.task('serve', ['sass','pb','minjs'], function() {
+gulp.task('serve', ['sass','mincss','pb','minjs'], function() {
 
     browserSync.init({
 
         server: "apps/" + opts.root
 
     });
-    gulp.watch("apps/" + opts.root + "/src/sass/*.sass", ['sass']);
+    gulp.watch("apps/" + opts.root + "/src/sass/*.sass", ['sass','mincss']);
     gulp.watch("apps/" + opts.root + "/src/js/*.js", ['minjs']);
     gulp.watch("apps/" + opts.root + "/src/html/**/*.html",['pb']);
     gulp.watch("apps/" + opts.root + "/src/html/**/*.html").on('change', browserSync.reload);
@@ -31,8 +31,7 @@ gulp.task('serve', ['sass','pb','minjs'], function() {
 
 gulp.task('sass', function() {
 
-
-    return gulp.src("apps/" + opts.root + "/src/sass/**/*.sass")
+    return gulp.src("apps/" + opts.root + "/src/scss/**/*.scss")
 
         .pipe(sass().on('error', sass.logError))
 
@@ -44,21 +43,20 @@ gulp.task('sass', function() {
         .pipe(concatCss("style.css"))
         .pipe(gulp.dest("apps/" + opts.root + "/css"))
         .pipe(browserSync.stream());
-
 });
 
-// gulp.task('mincss', function() {
-//
-//     return gulp.src("apps/" + opts.root + "/css/*.css")
-//
-//         .pipe(rename({suffix: ".min"}))
-//
-//         .pipe(cleanCSS())
-//
-//         .pipe(gulp.dest("apps/" + opts.root + "css/"));
-//
-//
-// });
+gulp.task('mincss', function() {
+
+    return gulp.src("apps/" + opts.root + "/css/*.css")
+
+        .pipe(rename({suffix: ".min"}))
+
+        .pipe(cleanCSS())
+
+        .pipe(gulp.dest("apps/" + opts.root + "/css/"));
+
+
+});
 
 gulp.task('minjs', function() {
 
