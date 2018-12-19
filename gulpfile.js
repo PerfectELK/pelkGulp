@@ -23,10 +23,12 @@ gulp.task('serve', ['sass','mincss','pb','minjs'], function() {
         server: "apps/" + opts.root
 
     });
-    gulp.watch("apps/" + opts.root + "/src/sass/*.sass", ['sass','mincss']);
+    gulp.watch("apps/" + opts.root + "/src/scss/**/*.scss", ['sass']);
+    gulp.watch("apps/" + opts.root + "/css/style.css", ['mincss']);
     gulp.watch("apps/" + opts.root + "/src/js/*.js", ['minjs']);
     gulp.watch("apps/" + opts.root + "/src/html/**/*.html",['pb']);
     gulp.watch("apps/" + opts.root + "/src/html/**/*.html").on('change', browserSync.reload);
+    gulp.watch("apps/" + opts.root + "/css/style.min.css").on('change', browserSync.reload);
 });
 
 gulp.task('sass', function() {
@@ -47,7 +49,7 @@ gulp.task('sass', function() {
 
 gulp.task('mincss', function() {
 
-    return gulp.src("apps/" + opts.root + "/css/*.css")
+    return gulp.src("apps/" + opts.root + "/css/style.css")
 
         .pipe(rename({suffix: ".min"}))
 
